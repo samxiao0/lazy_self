@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NPTEL Non-Conventional Energy Resources Quiz</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+
+:root {
+–bg: #0a0e1a;
+–surface: #111827;
+–surface2: #1a2236;
+–accent: #f59e0b;
+–accent2: #10b981;
+–accent3: #3b82f6;
+–danger: #ef4444;
+–text: #f1f5f9;
+–text-muted: #94a3b8;
+–border: rgba(255,255,255,0.08);
+–radius: 12px;
+}
+
+- { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+font-family: ‘DM Sans’, sans-serif;
+background: var(–bg);
+color: var(–text);
+min-height: 100vh;
+overflow-x: hidden;
+}
+
+/* Background grid */
+body::before {
+content: ‘’;
+position: fixed;
+inset: 0;
+background-image:
+linear-gradient(rgba(245,158,11,0.03) 1px, transparent 1px),
+linear-gradient(90deg, rgba(245,158,11,0.03) 1px, transparent 1px);
+background-size: 60px 60px;
+pointer-events: none;
+z-index: 0;
+}
+
+.container { max-width: 960px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 1; }
+
+/* Header */
+header {
+padding: 32px 0 24px;
+border-bottom: 1px solid var(–border);
+margin-bottom: 32px;
+}
+
+.header-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+
+.logo {
+font-family: ‘Syne’, sans-serif;
+font-weight: 800;
+font-size: 1.4rem;
+letter-spacing: -0.5px;
+}
+.logo span { color: var(–accent); }
+
+.subtitle { color: var(–text-muted); font-size: 0.85rem; margin-top: 2px; }
+
+/* Screen management */
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* Setup screen */
+#setup-screen { padding: 8px 0 60px; }
+
+.setup-title {
+font-family: ‘Syne’, sans-serif;
+font-weight: 700;
+font-size: 2.2rem;
+line-height: 1.2;
+margin-bottom: 8px;
+}
+.setup-title em { font-style: normal; color: var(–accent); }
+
+.setup-desc { color: var(–text-muted); margin-bottom: 36px; max-width: 520px; }
+
+.section-label {
+font-family: ‘Syne’, sans-serif;
+font-weight: 600;
+font-size: 0.75rem;
+letter-spacing: 2px;
+text-transform: uppercase;
+color: var(–accent);
+margin-bottom: 14px;
+}
+
+/* Mode tabs */
+.mode-tabs { display: flex; gap: 10px; margin-bottom: 32px; flex-wrap: wrap; }
+
+.mode-tab {
+padding: 10px 20px;
+border-radius: 8px;
+border: 1.5px solid var(–border);
+background: var(–surface);
+color: var(–text-muted);
+cursor: pointer;
+font-family: ‘Syne’, sans-serif;
+font-weight: 600;
+font-size: 0.85rem;
+transition: all 0.2s;
+}
+.mode-tab:hover { border-color: var(–accent); color: var(–text); }
+.mode-tab.active { border-color: var(–accent); background: rgba(245,158,11,0.12); color: var(–accent); }
+
+/* Week grid */
+.week-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+gap: 10px;
+margin-bottom: 32px;
+}
+
+.week-card {
+border: 1.5px solid var(–border);
+border-radius: var(–radius);
+padding: 14px 12px;
+background: var(–surface);
+cursor: pointer;
+transition: all 0.2s;
+text-align: center;
+user-select: none;
+}
+.week-card:hover { border-color: var(–accent3); transform: translateY(-2px); }
+.week-card.selected { border-color: var(–accent3); background: rgba(59,130,246,0.12); }
+.week-card .wnum {
+font-family: ‘Syne’, sans-serif;
+font-weight: 800;
+font-size: 1.5rem;
+color: var(–accent3);
+}
+.week-card.selected .wnum { color: var(–accent); }
+.week-card .wlabel { font-size: 0.75rem; color: var(–text-muted); margin-top: 2px; }
+.week-card .wqs { font-size: 0.7rem; color: var(–text-muted); margin-top: 4px; }
+
+.select-all-row { display: flex; gap: 10px; margin-bottom: 16px; }
+
+.btn-text {
+background: none;
+border: none;
+color: var(–accent);
+cursor: pointer;
+font-family: ‘DM Sans’, sans-serif;
+font-size: 0.85rem;
+padding: 4px 8px;
+border-radius: 4px;
+transition: background 0.2s;
+text-decoration: underline;
+}
+.btn-text:hover { background: rgba(245,158,11,0.1); }
+
+/* Options row */
+.options-row { display: flex; gap: 16px; margin-bottom: 32px; flex-wrap: wrap; align-items: center; }
+
+.checkbox-label {
+display: flex;
+align-items: center;
+gap: 8px;
+cursor: pointer;
+font-size: 0.9rem;
+color: var(–text-muted);
+transition: color 0.2s;
+}
+.checkbox-label:hover { color: var(–text); }
+.checkbox-label input[type=checkbox] {
+width: 16px;
+height: 16px;
+accent-color: var(–accent);
+cursor: pointer;
+}
+
+/* Big start button */
+.btn-start {
+background: var(–accent);
+color: #000;
+border: none;
+padding: 16px 40px;
+border-radius: 10px;
+font-family: ‘Syne’, sans-serif;
+font-weight: 700;
+font-size: 1rem;
+cursor: pointer;
+letter-spacing: 0.5px;
+transition: all 0.2s;
+display: inline-flex;
+align-items: center;
+gap: 8px;
+}
+.btn-start:hover { background: #fbbf24; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(245,158,11,0.3); }
+.btn-start:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+
+.selected-info { color: var(–text-muted); font-size: 0.85rem; margin-left: 16px; }
+.selected-info strong { color: var(–accent); }
+
+/* Quiz screen */
+#quiz-screen { padding: 8px 0 60px; }
+
+.quiz-topbar {
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-bottom: 28px;
+gap: 16px;
+flex-wrap: wrap;
+}
+
+.quiz-meta { font-size: 0.85rem; color: var(–text-muted); }
+.quiz-meta strong { color: var(–text); }
+
+.progress-wrap { flex: 1; min-width: 200px; }
+.progress-bar-bg { height: 4px; background: var(–surface2); border-radius: 2px; overflow: hidden; }
+.progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(–accent3), var(–accent)); border-radius: 2px; transition: width 0.4s ease; }
+.progress-label { font-size: 0.75rem; color: var(–text-muted); margin-top: 4px; text-align: right; }
+
+.week-badge {
+font-family: ‘Syne’, sans-serif;
+font-size: 0.75rem;
+font-weight: 600;
+padding: 4px 10px;
+border-radius: 20px;
+background: rgba(59,130,246,0.15);
+border: 1px solid rgba(59,130,246,0.3);
+color: var(–accent3);
+letter-spacing: 0.5px;
+}
+
+/* Question card */
+.question-card {
+background: var(–surface);
+border: 1px solid var(–border);
+border-radius: 16px;
+padding: 32px;
+margin-bottom: 20px;
+animation: fadeSlide 0.3s ease;
+}
+
+@keyframes fadeSlide {
+from { opacity: 0; transform: translateY(12px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+.q-number {
+font-family: ‘Syne’, sans-serif;
+font-size: 0.75rem;
+font-weight: 600;
+color: var(–accent);
+letter-spacing: 2px;
+text-transform: uppercase;
+margin-bottom: 12px;
+}
+
+.q-text {
+font-size: 1.05rem;
+line-height: 1.65;
+margin-bottom: 24px;
+font-weight: 400;
+}
+
+/* Table inside question */
+.q-text table, .q-table {
+border-collapse: collapse;
+width: 100%;
+margin: 12px 0;
+font-size: 0.9rem;
+}
+.q-text table th, .q-text table td,
+.q-table th, .q-table td {
+border: 1px solid var(–border);
+padding: 8px 12px;
+text-align: left;
+}
+.q-text table th, .q-table th {
+background: var(–surface2);
+font-family: ‘Syne’, sans-serif;
+font-weight: 600;
+font-size: 0.8rem;
+}
+
+/* Options */
+.options-list { display: flex; flex-direction: column; gap: 10px; }
+
+.option-item {
+border: 1.5px solid var(–border);
+border-radius: 10px;
+padding: 14px 18px;
+cursor: pointer;
+transition: all 0.18s;
+display: flex;
+align-items: flex-start;
+gap: 12px;
+font-size: 0.95rem;
+line-height: 1.5;
+position: relative;
+overflow: hidden;
+}
+.option-item:hover:not(.disabled) { border-color: var(–accent3); background: rgba(59,130,246,0.07); }
+.option-item.selected { border-color: var(–accent3); background: rgba(59,130,246,0.12); }
+.option-item.correct { border-color: var(–accent2); background: rgba(16,185,129,0.12); }
+.option-item.wrong { border-color: var(–danger); background: rgba(239,68,68,0.1); }
+.option-item.correct-answer { border-color: var(–accent2); background: rgba(16,185,129,0.08); }
+.option-item.disabled { cursor: default; }
+
+.option-key {
+font-family: ‘Syne’, sans-serif;
+font-weight: 700;
+font-size: 0.8rem;
+min-width: 24px;
+height: 24px;
+border-radius: 6px;
+background: var(–surface2);
+display: flex;
+align-items: center;
+justify-content: center;
+flex-shrink: 0;
+margin-top: 1px;
+}
+.option-item.selected .option-key { background: var(–accent3); color: #fff; }
+.option-item.correct .option-key { background: var(–accent2); color: #fff; }
+.option-item.wrong .option-key { background: var(–danger); color: #fff; }
+
+/* Feedback */
+.feedback-box {
+margin-top: 16px;
+padding: 14px 18px;
+border-radius: 10px;
+font-size: 0.9rem;
+line-height: 1.5;
+display: none;
+}
+.feedback-box.show { display: block; animation: fadeSlide 0.2s ease; }
+.feedback-box.correct-fb { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); color: #6ee7b7; }
+.feedback-box.wrong-fb { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.25); color: #fca5a5; }
+.feedback-box strong { font-family: ‘Syne’, sans-serif; }
+
+/* Nav row */
+.nav-row {
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 12px;
+margin-top: 8px;
+flex-wrap: wrap;
+}
+
+.btn-nav {
+padding: 12px 24px;
+border-radius: 8px;
+border: 1.5px solid var(–border);
+background: var(–surface);
+color: var(–text);
+cursor: pointer;
+font-family: ‘Syne’, sans-serif;
+font-weight: 600;
+font-size: 0.85rem;
+transition: all 0.18s;
+letter-spacing: 0.3px;
+}
+.btn-nav:hover { border-color: var(–accent3); color: var(–accent3); }
+.btn-nav.primary { background: var(–accent); color: #000; border-color: var(–accent); }
+.btn-nav.primary:hover { background: #fbbf24; border-color: #fbbf24; }
+.btn-nav:disabled { opacity: 0.35; cursor: not-allowed; }
+
+/* Score screen */
+#score-screen { padding: 8px 0 60px; }
+
+.score-hero {
+text-align: center;
+padding: 48px 24px;
+background: var(–surface);
+border: 1px solid var(–border);
+border-radius: 20px;
+margin-bottom: 24px;
+position: relative;
+overflow: hidden;
+}
+.score-hero::before {
+content: ‘’;
+position: absolute;
+top: -60px; left: 50%; transform: translateX(-50%);
+width: 300px; height: 300px;
+background: radial-gradient(circle, rgba(245,158,11,0.12), transparent 70%);
+pointer-events: none;
+}
+
+.score-label { font-family: ‘Syne’, sans-serif; font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase; color: var(–text-muted); margin-bottom: 16px; }
+.score-big { font-family: ‘Syne’, sans-serif; font-size: 5rem; font-weight: 800; line-height: 1; }
+.score-big .denom { font-size: 2rem; color: var(–text-muted); }
+.score-pct { font-size: 1.4rem; color: var(–accent); font-weight: 500; margin-top: 8px; }
+.score-grade { font-family: ‘Syne’, sans-serif; font-size: 1.1rem; margin-top: 12px; padding: 6px 20px; border-radius: 20px; display: inline-block; }
+.grade-A { background: rgba(16,185,129,0.15); color: #6ee7b7; border: 1px solid rgba(16,185,129,0.3); }
+.grade-B { background: rgba(59,130,246,0.15); color: #93c5fd; border: 1px solid rgba(59,130,246,0.3); }
+.grade-C { background: rgba(245,158,11,0.15); color: #fcd34d; border: 1px solid rgba(245,158,11,0.3); }
+.grade-D { background: rgba(239,68,68,0.12); color: #fca5a5; border: 1px solid rgba(239,68,68,0.3); }
+
+.stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px; }
+.stat-card { background: var(–surface); border: 1px solid var(–border); border-radius: 12px; padding: 20px; text-align: center; }
+.stat-card .sval { font-family: ‘Syne’, sans-serif; font-size: 2rem; font-weight: 800; }
+.stat-card .slabel { font-size: 0.8rem; color: var(–text-muted); margin-top: 4px; }
+.correct-stat .sval { color: var(–accent2); }
+.wrong-stat .sval { color: var(–danger); }
+.skip-stat .sval { color: var(–text-muted); }
+
+.score-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.btn-action {
+padding: 14px 28px;
+border-radius: 10px;
+border: 1.5px solid var(–border);
+background: var(–surface);
+color: var(–text);
+cursor: pointer;
+font-family: ‘Syne’, sans-serif;
+font-weight: 600;
+font-size: 0.9rem;
+transition: all 0.2s;
+}
+.btn-action:hover { border-color: var(–accent3); color: var(–accent3); }
+.btn-action.primary { background: var(–accent); color: #000; border-color: var(–accent); }
+.btn-action.primary:hover { background: #fbbf24; }
+
+/* Review */
+.review-section { margin-top: 32px; }
+.review-title { font-family: ‘Syne’, sans-serif; font-weight: 700; font-size: 1.2rem; margin-bottom: 16px; }
+
+.review-item {
+background: var(–surface);
+border: 1px solid var(–border);
+border-radius: 12px;
+padding: 20px;
+margin-bottom: 12px;
+}
+.review-item.r-correct { border-left: 3px solid var(–accent2); }
+.review-item.r-wrong { border-left: 3px solid var(–danger); }
+.review-item.r-skip { border-left: 3px solid var(–text-muted); }
+
+.r-qnum { font-family: ‘Syne’, sans-serif; font-size: 0.7rem; color: var(–text-muted); letter-spacing: 1px; margin-bottom: 6px; }
+.r-qtext { font-size: 0.9rem; margin-bottom: 8px; line-height: 1.5; }
+.r-answers { font-size: 0.85rem; }
+.r-your { color: var(–danger); } .r-your b { font-weight: 600; }
+.r-correct-ans { color: var(–accent2); } .r-correct-ans b { font-weight: 600; }
+
+/* Inline math/chem rendering */
+sub, sup { font-size: 0.75em; }
+
+/* Responsive */
+@media (max-width: 600px) {
+.setup-title { font-size: 1.6rem; }
+.score-big { font-size: 3.5rem; }
+.stats-row { grid-template-columns: repeat(3,1fr); gap: 8px; }
+.stat-card { padding: 14px 8px; }
+.stat-card .sval { font-size: 1.5rem; }
+.question-card { padding: 20px; }
+.week-grid { grid-template-columns: repeat(3,1fr); }
+}
+</style>
+
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="header-inner">
+      <div>
+        <div class="logo">NPTEL <span>Quiz</span></div>
+        <div class="subtitle">Non-Conventional Energy Resources</div>
+      </div>
+      <div id="header-score" style="display:none; font-family:'Syne',sans-serif; font-size:0.85rem; color:var(--text-muted);">
+        Score: <span id="live-score" style="color:var(--accent); font-weight:700;">0</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- SETUP -->
+
+  <div id="setup-screen" class="screen active">
+    <p class="setup-title">Test Your Knowledge<br>Week by <em>Week</em></p>
+    <p class="setup-desc">120 questions across 12 weeks covering energy resources, solar, wind, batteries, fuel cells and more.</p>
+
+```
+<p class="section-label">Quiz Mode</p>
+<div class="mode-tabs">
+  <button class="mode-tab active" data-mode="all">All Weeks (120 Qs)</button>
+  <button class="mode-tab" data-mode="select">Select Weeks</button>
+</div>
+
+<div id="week-selector" style="display:none;">
+  <div class="select-all-row">
+    <button class="btn-text" onclick="selectAllWeeks()">Select All</button>
+    <button class="btn-text" onclick="deselectAllWeeks()">Deselect All</button>
+  </div>
+  <div class="week-grid" id="week-grid"></div>
+</div>
+
+<p class="section-label">Options</p>
+<div class="options-row">
+  <label class="checkbox-label">
+    <input type="checkbox" id="opt-shuffle"> Shuffle Questions
+  </label>
+  <label class="checkbox-label">
+    <input type="checkbox" id="opt-show-feedback" checked> Show Answer Feedback
+  </label>
+</div>
+
+<div style="display:flex; align-items:center; flex-wrap:wrap; gap:12px;">
+  <button class="btn-start" id="start-btn" onclick="startQuiz()">Start Quiz →</button>
+  <span class="selected-info" id="selected-info"><strong>120</strong> questions selected</span>
+</div>
+```
+
+  </div>
+
+  <!-- QUIZ -->
+
+  <div id="quiz-screen" class="screen">
+    <div class="quiz-topbar">
+      <div class="quiz-meta">Q <strong id="q-current">1</strong> of <strong id="q-total">120</strong></div>
+      <div class="progress-wrap">
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-fill" style="width:0%"></div></div>
+        <div class="progress-label" id="progress-label">0%</div>
+      </div>
+      <div class="week-badge" id="q-week-badge">Week 1</div>
+      <button class="btn-nav" onclick="endQuiz()" style="padding:8px 14px; font-size:0.78rem;">End Quiz</button>
+    </div>
+
+```
+<div class="question-card" id="question-card">
+  <div class="q-number" id="q-number"></div>
+  <div class="q-text" id="q-text"></div>
+  <div class="options-list" id="options-list"></div>
+  <div class="feedback-box" id="feedback-box"></div>
+</div>
+
+<div class="nav-row">
+  <button class="btn-nav" id="btn-prev" onclick="navigate(-1)">← Prev</button>
+  <button class="btn-nav" id="btn-skip" onclick="skipQuestion()">Skip</button>
+  <button class="btn-nav primary" id="btn-next" onclick="navigate(1)">Next →</button>
+</div>
+```
+
+  </div>
+
+  <!-- SCORE -->
+
+  <div id="score-screen" class="screen">
+    <div class="score-hero">
+      <div class="score-label">Final Score</div>
+      <div class="score-big">
+        <span id="final-score">0</span><span class="denom"> / <span id="final-total">120</span></span>
+      </div>
+      <div class="score-pct" id="final-pct"></div>
+      <div class="score-grade" id="final-grade"></div>
+    </div>
+
+```
+<div class="stats-row">
+  <div class="stat-card correct-stat"><div class="sval" id="s-correct">0</div><div class="slabel">Correct</div></div>
+  <div class="stat-card wrong-stat"><div class="sval" id="s-wrong">0</div><div class="slabel">Wrong</div></div>
+  <div class="stat-card skip-stat"><div class="sval" id="s-skip">0</div><div class="slabel">Skipped</div></div>
+</div>
+
+<div class="score-actions">
+  <button class="btn-action primary" onclick="restartSame()">Retake Quiz</button>
+  <button class="btn-action" onclick="showSetup()">Change Settings</button>
+</div>
+
+<div class="review-section" id="review-section"></div>
+```
+
+  </div>
+</div>
+
+<script>
+// =============================
+// ALL QUESTIONS DATA
+// =============================
+const allQuestions = [
+  // WEEK 1
+  {week:1, q:"Match the following items and their closest size scale or order of magnitude:<br><table><tr><th>Device/Items</th><th>Order</th></tr><tr><td>(A) Portable hard discs</td><td>(i) Peta</td></tr><tr><td>(B) Overall data created and stored by humanity by 2010</td><td>(ii) Exa</td></tr><tr><td>(C) World annual energy usage</td><td>(iii) Tera</td></tr><tr><td>(D) Supercomputers</td><td>(iv) Zetta</td></tr><tr><td>(E) NGC 5746</td><td>(v) Yotta</td></tr></table>",
+   opts:["A(ii), B(iv), C(iii), D(i), E(v)","A(i), B(iv), C(iii), D(ii), E(v)","A(iii), B(iv), C(ii), D(i), E(v)","A(iii), B(i), C(ii), D(iv), E(v)"],
+   ans:[2], multi:false},
+  {week:1, q:"Match the following device and their power usage/capability:<br><table><tr><th>Device</th><th>Power usage (approx.)</th></tr><tr><td>(A) Car battery</td><td>(i) 0.6 μW</td></tr><tr><td>(B) Household bulb</td><td>(ii) 5 kW</td></tr><tr><td>(C) Hubble</td><td>(iii) 1 MW</td></tr><tr><td>(D) Submarines</td><td>(iv) 0.1 kW</td></tr><tr><td>(E) Pacemaker</td><td>(v) 2.4 kW</td></tr></table>",
+   opts:["A(i), B(iv), C(v), D(iii), E(ii)","A(ii), B(iv), C(v), D(iii), E(i)","A(ii), B(i), C(v), D(iii), E(iv)","A(ii), B(iv), C(v), D(i), E(iii)"],
+   ans:[1], multi:false},
+  {week:1, q:"Arrange the following in increasing order of their volume percentage in dry air:<br>Ar, He, Ne, CH₄, N₂, O₂, CO₂",
+   opts:["CH₄ &lt; Ne &lt; He &lt; CO₂ &lt; Ar &lt; O₂ &lt; N₂","CH₄ &lt; He &lt; Ne &lt; Ar &lt; CO₂ &lt; O₂ &lt; N₂","CH₄ &lt; He &lt; Ne &lt; CO₂ &lt; Ar &lt; O₂ &lt; N₂","He &lt; CH₄ &lt; Ne &lt; Ar &lt; CO₂ &lt; O₂ &lt; N₂"],
+   ans:[2], multi:false},
+  {week:1, q:"Meteors burning off generally occurs in ___ and the jet liners fly in ____",
+   opts:["Thermosphere, Troposphere","Thermosphere, Mesosphere","Stratosphere, Mesosphere","Mesosphere, Troposphere"],
+   ans:[3], multi:false},
+  {week:1, q:"Approximately 80% of earth's atmosphere's mass is in the ____",
+   opts:["Thermosphere","Exosphere","Troposphere","Startosphere"],
+   ans:[2], multi:false},
+  {week:1, q:"Time required to double the CO₂ in the atmosphere at the present rate of usage is ____ years and it is calculated based on the assumptions of ________<br>i. All atmosphere is within the troposphere<br>ii. All energy released is through carbon combustion",
+   opts:["86, (i) only","86, (i) and (ii)","43, (i) only","43, (i) and (ii)"],
+   ans:[1], multi:false},
+  {week:1, q:"Find out genuineness of below given statements:<br>i. Enthlpy change for the formation of carbon dioxide is an endothermic process.<br>ii. Enthlpy change for the formation of carbon dioxide is 394 kJ/mol.",
+   opts:["Both statements are true.","Both statements are false","Statement (i) is true and (ii) is false.","Statement (i) is false and (ii) is true."],
+   ans:[1], multi:false},
+  {week:1, q:"Crude oil contains these elements:", opts:["Carbon","Hydrogen","Oxygen","Nitrogen"], ans:[0,1,2,3], multi:true},
+  {week:1, q:"In the world energy usage pie-chart it is seen that most of the energy currently used by humanity comes from ________",
+   opts:["Fossil fuels","Solar energy","Nuclear energy","Bio mass"], ans:[0], multi:false},
+  {week:1, q:"Conditions under which crude oil forms are millions of years with ___________",
+   opts:["Heat, high pressure, absence of oxygen","Heat, high pressure, presence of oxygen","Heat, low pressure, absence of oxygen","Heat, low pressure, presence of oxygen"],
+   ans:[0], multi:false},
+
+  // WEEK 2
+  {week:2, q:"GDP of various nations is very closely related to the _______",
+   opts:["Energy consumption","Incident solar energy","Presence of wind farms","Forest area in the nation"],
+   ans:[0], multi:false},
+  {week:2, q:"What are the cleaner sources of energy?", opts:["Solar","Wind","Geothermal","Ocean thermal energy"], ans:[0,1,2,3], multi:true},
+  {week:2, q:"Renewable energy sources are ______", opts:["Biomass","Solar PV","Fossil fuel","Diesel"], ans:[0,1], multi:true},
+  {week:2, q:"Match the following:<br><table><tr><th></th><th></th></tr><tr><td>(A) Non-conventional energy</td><td>(i) Nature or human can renew the energy in a time frame</td></tr><tr><td>(B) Renewable energy</td><td>(ii) Available in inexhaustible form</td></tr><tr><td>(C) Clean energy</td><td>(iii) Majority of us are not using</td></tr><tr><td></td><td>(iv) Benign with the environment</td></tr><tr><td></td><td>(v) Majority of us are using</td></tr></table>",
+   opts:["A(v), B(i), C(iv)","A(iii), B(i), C(iv)","A(iii), B(ii), C(iv)","A(iv), B(v), C(iv)"],
+   ans:[1], multi:false},
+  {week:2, q:"Advantages of microdams over large dams are__________",
+   opts:["Less disruptive","Low transmission cost but high transmission loss","Low transmission cost and low transmission loss","Infrastructure can be quickly built"],
+   ans:[0,2,3], multi:true},
+  {week:2, q:"Match the following:<br><table><tr><th></th><th></th></tr><tr><td>(A) Wind Energy</td><td>(i) Utilizes the concept of temperature difference</td></tr><tr><td>(B) Geothermal energy</td><td>(ii) Affected by the seasons</td></tr><tr><td>(C) Solar energy</td><td>(iii) Tapped in the form of steam</td></tr><tr><td>(D) Ocean thermal energy</td><td>(iv) Photons are the energy packets</td></tr></table>",
+   opts:["A(iv), B(iii), C(i), D(ii)","A(ii), B(iii), C(iv), D(i)","A(iii), B(i), C(iv), D(i)","A(iv), B(iii), C(ii), D(i)"],
+   ans:[1], multi:false},
+  {week:2, q:"Energy tapped from renewable sources can be stored using ____",
+   opts:["Batteries","Fuel cells","IC engines","Nuclear plants"],
+   ans:[0], multi:false},
+  {week:2, q:"An electrochemical device consists of an anode, cathode and an electrolyte. An electrolyte can be in the form of a solution. During its typical functioning, when attached to an external circuit with metal wires, electrons and ions flow through_____ respectively",
+   opts:["External circuit and electrolyte","Electrolyte and outer circuit","Metal wire and solution","Solution and metal wire"],
+   ans:[0,2], multi:true},
+  {week:2, q:"Almost 90% of fuel in the cars is used to",
+   opts:["Transport the driver alone","Transport the car itself","Transport the air in the car","Transport the fuel in the car"],
+   ans:[1], multi:false},
+  {week:2, q:"Fuel to_____ ratio defines how _____ a fuel is burnt",
+   opts:["Carbon, cleanly","Argon, efficiently","Air, cleanly","Battery, efficiently"],
+   ans:[2], multi:false},
+
+  // WEEK 3
+  {week:3, q:"As the GDP of a nation increases, energy consumption generally:",
+   opts:["Increases","Decreases","Remains unaffected","Initially increases and then steadily decreases"],
+   ans:[0], multi:false},
+  {week:3, q:"Statement: Maharashtra consumes more energy than Tamil Nadu.<br>Conclusion: Based on trends usually seen in relationship between energy usage and economic activity in India<br>(A) Maharashtra has more GSDP than Tamil Nadu.<br>(B) Tamil Nadu has more industrial output than Maharashtra",
+   opts:["Conclusion (A) follows.","Conclusion (B) follows.","Conclusions (A) follows but not conclusion (B)","Conclusion (B) follows but not conclusion (A)"],
+   ans:[0,2], multi:true},
+  {week:3, q:"40,000 years ago atmospheric CO₂ concentration was ____ and this is determined using bubbles of ____ trapped in ice.",
+   opts:["Not more than 300 ppm, Air","More than 300 ppm, Air","More than 600 ppm, CO₂","Between 250 and 300 ppm, Air"],
+   ans:[0], multi:false},
+  {week:3, q:"Statement: Glaciers are melting due to the increasing CO₂ percentage in the atmosphere.<br>Conclusion:<br>(A) CO₂ traps the energy which comes from sun.<br>(B) More CO₂ in atmosphere means more absorption of energy re-released by earth.",
+   opts:["Conclusion (A) is right","Conclusion (B) is right","Only conclusion (A) is right and not conclusion (B)","Neither conclusion (A) nor (B) is right"],
+   ans:[0,1], multi:true},
+  {week:3, q:"World's total energy usage is the same as the energy received by the earth from sun in _____",
+   opts:["10 hr","0.042 days","0.1 hr","1 hr"],
+   ans:[1,3], multi:true},
+  {week:3, q:"What are the various options possible to maximize energy received by a planet from its star?",
+   opts:["Increasing the surface area exposure of the planet","Bringing the planet closer to the star","Using Dyson sphere method","Moving the planet further from the star"],
+   ans:[0,1,2], multi:true},
+  {week:3, q:"Temperature of the Sun's surface is approximately",
+   opts:["10000 K","5500° C","Similar in order of magnitude to the temperature attained during arc welding","constant"],
+   ans:[1,2,3], multi:true},
+  {week:3, q:"Arrange the following in their increasing order:<br>a) Radius of earth's orbit, Earth's radius, Sun's radius",
+   opts:["Earth's radius &lt; Sun's radius &lt; Radius of earth's orbit","Earth's radius &lt; Radius of earth's orbit &lt; Sun's radius","Radius of earth's orbit &lt; Earth's radius &lt; Sun's radius","Radius of earth's orbit &lt; Sun's radius &lt; Earth's radius"],
+   ans:[0], multi:false},
+  {week:3, q:"At any given point of time, one side of Earth radiates energy obtained from the sun back to the space because ______.",
+   opts:["It is night on that side of Earth","Temperature of that side of the earth is more than that of the dark side of the space.","The surface temperature of other stars is less than that of the sun","Moon is hotter than the sun"],
+   ans:[0,1], multi:true},
+  {week:3, q:"The intensity of sun light incident on the earth is higher during the ________ than _____ of the day. And, therefore a solar device captures ___ light during that part of the day.",
+   opts:["Middle, morning, more","Evening, middle, less","Morning, middle, less","Middle, evening, more"],
+   ans:[0,3], multi:true},
+
+  // WEEK 4
+  {week:4, q:"Wavelength of the most intense part of the spectrum associated with a black body ______ with increase of temperature",
+   opts:["Increases","Decreases","First decreases and then increases","First increases and then decreases"],
+   ans:[1], multi:false},
+  {week:4, q:"________ constant has helped in understanding the lower wavelength region of spectral irradiance versus temperature plot at temperature T as well as __________.",
+   opts:["Planck's, Electrochemical effect","Boltzamann's, Photoelectric effect","Planck's, Photoelectric effect","Boltzamann's, Electrochemical effect"],
+   ans:[2], multi:false},
+  {week:4, q:"Particle of light is known as ______ and it can only possess energies hv, _____, nhv",
+   opts:["Photon, 2 hv","Phonon, 3 hv","Photon, 2.5 hv","Phonon, 2.5 hv"],
+   ans:[0], multi:false},
+  {week:4, q:"The full solar energy spectrum is consistent with the __________ and the visible region of this lies between __________.",
+   opts:["Black body radiation, Radio waves and microwaves","Brown body radiation, Ultraviolet and Infrared","Black body radiation, Microwaves and Infrared","Black body radiation, Infrared and Ultraviolet"],
+   ans:[3], multi:false},
+  {week:4, q:"Flat plate collector to harness solar energy requires _____conducting sheet made of _____ material.",
+   opts:["Electrically, Ceramic","Thermally, Metal","Thermally, Copper","Magnetically, Copper"],
+   ans:[1,2], multi:true},
+  {week:4, q:"Metal sheet in solar energy collector is coated with black color to__________.<br>(i) Reduce the reflection of sun light<br>(ii) Increase the absorption of sun light<br>(iii) Protect from the environment",
+   opts:["Only (i)","Only (ii)","Both (i) and (ii)","Both (i) and (iii)"],
+   ans:[2], multi:false},
+  {week:4, q:"Glass plate on a solar energy collector set-up _____.<br>(i) Keeps the visible radiation stuck between metal sheet and glass<br>(ii) Reduces convective losses.<br>(iii) Reduces IR radiative losses.",
+   opts:["Both (i) and (ii)","Both (ii) and (iii)","Both (i) and (iii)","All (i), (ii) and (iii)"],
+   ans:[1], multi:false},
+  {week:4, q:"Statement: The ability to pick up heat is limited by the area of a flat plate collector exposed to the sun. It can be increased by replacing the tube by fins or a mesh.<br>Reason:<br>(i) Fins and mesh have more surface area than tube.<br>(ii) Fins increases more air resistance",
+   opts:["Only reason (i) follows","Only reason (ii) follows","Both reason (i) and (ii) follow","Neither reason (i) nor reason (ii) follow"],
+   ans:[0], multi:false},
+  {week:4, q:"Parabolic dish reflectors are in the shape of a _______ mirror which uses the idea of concentrating solar energy at _____ focal point. These are made up of highly polished stainless steel or aluminum surfaces.",
+   opts:["Convex, Single","Concave, Single","Convex, Multiple","Concave, Multiple"],
+   ans:[1], multi:false},
+  {week:4, q:"A single focal point parabolic dish collector is said to be __________",
+   opts:["Flat plate collector","Non-imaging concentrator","Trough collector","Imaging concentrator"],
+   ans:[3], multi:false},
+
+  // WEEK 5
+  {week:5, q:"Match the following materials and band gap values:<br><table><tr><th>Materials</th><th>Band gap</th></tr><tr><td>(A) Metal</td><td>(i) &lt; 2 eV</td></tr><tr><td>(B) Insulator</td><td>(ii) Overlapping</td></tr><tr><td>(C) Semiconductor</td><td>(iii) &gt; 2 eV</td></tr><tr><td></td><td>(iv) Partially filled</td></tr></table>",
+   opts:["A(ii), B(iii), C(i)","A(i), B(ii), C(iii)","A(ii), B(iv), C(i)","A(iv), B(iii), C(i)"],
+   ans:[0,3], multi:true},
+  {week:5, q:"Statement: Material 'A' has a band gap value of 1.9 eV.<br>Implication:<br>(i) This material is transparent to parts of the visible spectrum.<br>(ii) This material is insulating in nature.<br>(iii) Wavelength equivalent to band gap value lies in visible spectrum.",
+   opts:["Both (i) and (ii) are true","Both (ii) and (iii) are true","Both (i) and (iii) are true","Option (i) is true and the option (ii) is false."],
+   ans:[2,3], multi:true},
+  {week:5, q:"Select the true/false for the statements:<br><table><tr><th>Statements</th><th>True/false</th></tr><tr><td>(A) Fermi level lies closer to the conduction band and valence band in n-type and p-type extrinsic semiconductor respectively.</td><td>(i) True</td></tr><tr><td>(B) The bandgap of a material can be changed</td><td>(ii) False</td></tr></table>",
+   opts:["A(i), B(i)","A(ii), B(i)","A (i), B(ii)","A(ii), B(ii)"],
+   ans:[0], multi:false},
+  {week:5, q:"_____ band gap material is always a preferred over the _____ band gap material for fabricating a ______",
+   opts:["Indirect, Direct, Solar cell","Direct, Indirect, solar cell","Indirect, Direct, Imaging concentrator","Direct, Indirect, Flat plate collector"],
+   ans:[1], multi:false},
+  {week:5, q:"Conductivity of an_____ semiconductor depends on temperature. It's __________ and hence the conductivity can be changed by subsequently doping this material.",
+   opts:["Intrinsic, Charge carrier concentration","Extrinsic, Charge carrier concentration"],
+   ans:[0], multi:false},
+  {week:5, q:"In a p-n junction, band bending happen when_________________________.",
+   opts:["Fermi energy of the two materials is exactly the same before the junction is formed.","Charge carriers are the same across the junction","Fermi energy varies across the junction, when it is initially formed","Chemical potential of electrons on one side of junction is more than that in the other side of the junction."],
+   ans:[2,3], multi:true},
+  {week:5, q:"Label the graph.<br>Profile (1): Charge density (ρ)<br>Profile (2): Electric Field (∂E/∂x = ρ/ε)<br>Profile (3): Potential (∂²V/∂x² = −ρ/ε)<br>[Profiles shown as [A], [B], [C] in graph]",
+   opts:["1(A), 2(C), 3(B)","1(A), 2(B), 3(C)","1(C), 2(A), 3(B)","1(B), 2(C), 3(A)"],
+   ans:[1], multi:false},
+  {week:5, q:"Match the following:<br><table><tr><th>Column I</th><th>Column II</th></tr><tr><td>(A) Czochralski process</td><td>(i) Shape and Size limitation due to surface tension of liquid</td></tr><tr><td></td><td>(ii) Primarily shape limitation due to surface tension of liquid, relatively minimal limitations with respect to size</td></tr><tr><td>(B) Float Zone process</td><td>(iii) Fixed RF heating coils</td></tr><tr><td></td><td>(iv) Moving RF heating coils</td></tr></table>",
+   opts:["A(i), B(ii)","A(ii), B(i)","A(iii), B(iv)","A(iv), B(iii)"],
+   ans:[1,2], multi:true},
+  {week:5, q:"Arrange the following in increasing order of their disorder:<br>(i) Small size crystal material<br>(ii) Single crystal material<br>(iii) Amorphous material",
+   opts:["(ii) &lt; (i) &lt; (iii)","(iii) &lt; (i) &lt; (ii)","(i) &lt; (ii) &lt; (iii)","(iii) &lt; (ii) &lt; (i)"],
+   ans:[0], multi:false},
+  {week:5, q:"Name the process which is used to manufacture p-n junction by enabling gaseous elements to condense on surface of substrate under high vacuum.",
+   opts:["Czocharlski process","Diffusion","Epitaxy","Float zone process"],
+   ans:[2], multi:false},
+
+  // WEEK 6
+  {week:6, q:"Both fermi energy and band structure are flat when traversing across a semiconductor p-n junction.",
+   opts:["True","False"], ans:[1], multi:false},
+  {week:6, q:"What are the advantages of an amorphous silicon over the single and polycrystalline sample?",
+   opts:["It is more flexible to keep on a substrate or contour.","It possesses more dangling bonds and thus the more number of defects.","It is more effective in capturing solar radiation","It is less expensive."],
+   ans:[0,3], multi:true},
+  {week:6, q:"Match the following:<br><table><tr><th>Solar cell Component</th><th>Ideal Resistance</th></tr><tr><td>New solar cell (A) Shunt resistor, R_sh</td><td>(i) High</td></tr><tr><td>New solar cell (B) Series resistor, R_s</td><td></td></tr><tr><td>Aged solar cell (C) Shunt resistor, R_sh</td><td>(ii) Low</td></tr><tr><td>Aged solar cell (D) Series resistor, R_s</td><td></td></tr></table>",
+   opts:["A(i), B(i), C(ii), D(i)","A(i), B(ii), C(ii), D(i)","A(i), B(ii), C(i), D(ii)","A(i), B(i), C(ii), D(ii)"],
+   ans:[1], multi:false},
+  {week:6, q:"Fill factor is __________",
+   opts:["V_OC · I_MPP / (V_MPP · I_SC)","V_MPP · I_MPP / (V_OC · I_SC)","V_MPP · I_SC / (V_OC · I_MPP)","1 / (V_OC · I_SC / (V_MPP · I_MPP))"],
+   ans:[1,3], multi:true},
+  {week:6, q:"Name the following symbols in the circuit (A = current source, B = diode, C = series resistor, D = shunt resistor):<br>Symbol 1→A, Symbol 2→B, Symbol 3→C, Symbol 4→D",
+   opts:["A(iv), B(i), C(iii), D(ii)","A(iv), B(ii), C(i), D(ii)","A(iv), B(i), C(ii), D(iii)","A(iv), B(ii), C(iii), D(i)"],
+   ans:[0,2], multi:true},
+  {week:6, q:"Open circuit voltage of a solar cell______________",
+   opts:["Varies with exponential of photocurrent","Does not vary with temperature","Varies linearly with temperature","Varies with logarithm of photocurrent"],
+   ans:[2,3], multi:true},
+  {week:6, q:"Bulk Lead sulfide material can absorb the full visible spectrum because______",
+   opts:["It is a direct band gap semiconductor","It is an indirect band gap semiconductor","Bulk lead sulfide band gap lies in the middle of this region with respect to wavelength","Bulk lead sulfide band gap corresponds to a longer wavelength than that corresponding to this region"],
+   ans:[3], multi:false},
+  {week:6, q:"_____ solar cell improves solar cell efficiency by using materials with _____ band gap values.",
+   opts:["Amorphous silicon, Different","Tandem, Different","Amorphous, Same","Tandem, Same"],
+   ans:[1], multi:false},
+  {week:6, q:"If the refractive index of a glass and air is 1.5 and 1 respectively then what should be the ideal refractive index of antireflective coating material?",
+   opts:["1.425","1.335","1.225","1.125"],
+   ans:[2], multi:false},
+  {week:6, q:"According to Shockley-Quiesser limit for the single p-n junction, 'In _____, AM 1.5 solar radiation with a band gap of 1.34 eV, _____ % efficiency is obtained'.",
+   opts:["Un-concentrated, 33.4","Concentrated, 33.4","Un-concentrated, 22.4","Concentrated, 32.4"],
+   ans:[0], multi:false},
+
+  // WEEK 7
+  {week:7, q:"In a photo-electrochemical reaction of water in the presence of TiO₂ photo-catalyst; ______ and ______ gas are generated at anode and cathode respectively.",
+   opts:["O₂, H₂","O₂, CO₂","CO₂, H₂","H₂, O₂"],
+   ans:[0], multi:false},
+  {week:7, q:"Match the following steps to reach the final photo-electrochemical reaction of H₂ gas generation:<br><table><tr><th>Steps</th><th>Process</th></tr><tr><td>1. Step 1 (A)</td><td>(i) Migration of e-h pair towards the surface</td></tr><tr><td>2. Step 2 (B)</td><td>(ii) Electron-hole pair generation</td></tr><tr><td>3. Step 3 (C)</td><td>(iii) Incoming photo radiation</td></tr><tr><td>4. Step 4 (D)</td><td>(iv) Recombination of electron-hole pairs</td></tr><tr><td></td><td>(v) Reaction occurs</td></tr></table>",
+   opts:["A(iii), B(i), C(iv), D(v)","A(iii), B(ii), C(i), D(iv)","A(iii), B(ii), C(iv), D(v)","A(iii), B(ii), C(i), D(v)"],
+   ans:[1], multi:false},
+  {week:7, q:"Use of a co-catalyst in the process of hydrogen and oxygen gas generation helps in increasing rate of electron-hole recombination",
+   opts:["True","False"], ans:[1], multi:false},
+  {week:7, q:"Sacrificial agent is added to increase the electron-hole pair recombination reaction",
+   opts:["True","False"], ans:[1], multi:false},
+  {week:7, q:"Particles size reduction _____ the chances of_____.",
+   opts:["Decreases, Electron-electron recombination and loss","Increases, Hole-hole pair recombination and loss","Decreases, Encountering a defect enroute surface","Increases, Encountering a defect enroute surface"],
+   ans:[2], multi:false},
+  {week:7, q:"Match the advantages and disadvantages of different type of windmills:<br><table><tr><th>Type of Windmill</th><th>Advantages/Disadvantages</th></tr><tr><td>A. Vertical axis</td><td>(i) Easy to access stronger winds</td></tr><tr><td></td><td>(ii) Wind energy is not captured throughout the rotation</td></tr><tr><td>B. Horizontal axis</td><td>(iii) More turbulent flow of air near the ground</td></tr><tr><td></td><td>(iv) Complexity with respect to setting up</td></tr></table>",
+   opts:["A(i), B(ii), A(iii), B(iv)","A(iii), B(i), A(ii), B(iv)","A(iii), B(i), A(iv), B(ii)","A(ii), B(iii), A(i), B(iv)"],
+   ans:[1], multi:false},
+  {week:7, q:"A large wind turbine of 2-3 MW with 35% capacity factor is installed in a region. Then the number of wind turbines required for fulfilling the energy consumption of 500 exa joules wills be_________ millions.",
+   opts:["31","22","15","10"],
+   ans:[1,2], multi:true},
+  {week:7, q:"What will be the total approximate space requirement to install all the wind turbines calculated in question 7.",
+   opts:["21 million square km","16 million square km","11 million square km","6 million square km"],
+   ans:[2], multi:false},
+  {week:7, q:"Name the points A, B, C and D in the wind power vs wind speed graph:<br><table><tr><th>Points</th><th>Process</th></tr><tr><td>1. A</td><td>(i) Windmill shut down</td></tr><tr><td>2. B</td><td>(ii) Power available in windmill</td></tr><tr><td>3. C</td><td>(iii) No power generated</td></tr><tr><td>4. D</td><td>(iv) Reaches to rated power</td></tr></table>",
+   opts:["1(ii), 2 (iii), 3(iv), 4(i)","1(i), 2 (iii), 3(iv), 4(iii)","1(iii), 2 (ii), 3(iv), 4(i)","1(iii), 2 (iv), 3(ii), 4(i)"],
+   ans:[2], multi:false},
+  {week:7, q:"Wind energy is calculated using Bernoulli's equation ______",
+   opts:["½mv² + gh + P = constant","½mv² + mg + P = constant","½ρv² + ρh + P = constant","½ρv² + ρgh + P = constant"],
+   ans:[3], multi:false},
+
+  // WEEK 8
+  {week:8, q:"Formula for calculating the wind power is ____",
+   opts:["½ρAl(v₁² − v₂²)","½ρA(v₁² − v₂²)","½ρAv(v₁² − v₂²)","½(ρA/t)(v₁² − v₂²)"],
+   ans:[2], multi:false},
+  {week:8, q:"Betz limit is the _____ maximum efficiency for a wind turbine. According to it only _____ % of the kinetic energy from wind can be used to spin the turbine to generate electricity.",
+   opts:["Experimental, 59.3","Theoretical, 59.3","Experimental, 49.3","Theoretical, 49.3"],
+   ans:[1], multi:false},
+  {week:8, q:"If V is the velocity of the wind, energy available in wind is proportional to",
+   opts:["V","V²","V³","V⁴"],
+   ans:[1], multi:false},
+  {week:8, q:"If the wind velocity is 20 kmh⁻¹ then the tip velocity can be 60 kmh⁻¹.",
+   opts:["True","False"], ans:[0], multi:false},
+  {week:8, q:"Windmills are usually positioned",
+   opts:["Such that the tips of adjacent wind mills touch each other","Such that the base of adjacent windmills touch each other","Such that there is sufficient space between windmills to avoid air turbulence from one windmill affecting the adjacent windmill","Such that the gears of the windmills touch each other to increase efficiency"],
+   ans:[2], multi:false},
+  {week:8, q:"Gearbox is used in a windmill to typically ensure",
+   opts:["Uniform rpm at blade and generator","Higher rpm at blade, lower rpm at generator","Lower rpm at blade, higher rpm at generator","No rpm at blade but low rpm at generator"],
+   ans:[2], multi:false},
+  {week:8, q:"Select the statements which are true.<br>(A) Tip speed ratio is the ratio of the linear speed of the tip of the blade to the wind speed.<br>(B) Tip speed ratio is greater than one for push design and it is smaller than one for lift design type windmills.<br>(C) Tip speed ratio is smaller than one for push design and it is greater than one for lift design type windmills.<br>(D) Speed of the blade is more at the centre than at the tip.",
+   opts:["A","B","C","D"],
+   ans:[0,2], multi:true},
+  {week:8, q:"What is the significance of three blades in windmills?<br>A. In comparison to one blade, three blades are used to increase the interaction with the wind<br>B. Better suited for generating higher torque<br>C. Distributes the load on the shaft more uniformly than a one blade windmill especially with respect to wind turbulence near tower",
+   opts:["A","B","C","A but not B"],
+   ans:[0,1,2], multi:true},
+  {week:8, q:"Horizontal axis wind turbines.",
+   opts:["Access stronger winds","Are often mounted on tall towers","Usually have blades that are pushed by the wind for only part of their rotation","Capture wind energy throughout rotation"],
+   ans:[0,1,3], multi:true},
+  {week:8, q:"Where and why is the pitch bearing used in a windmill set-up?",
+   opts:["Blades are attached to it","Hub and blades are linked using this.","It reorients the blade.","It increases the rpm"],
+   ans:[0,1,2], multi:true},
+
+  // WEEK 9
+  {week:9, q:"OTEC principle is based on the _______ between the warm water at surface and colder water at approximately ___ distance below the surface.",
+   opts:["Pressure gradient, ~1.5 km","Temperature difference, ~ 1.5 km","Thermal coefficient, ~5 km","Temperature fluctuation, ~5 km"],
+   ans:[1], multi:false},
+  {week:9, q:"If persons A and B are moving away from the earth's surface at a location on the sea, person A is moving towards the earth's centre and person B away from it. Then, the pressure experienced will be ______.",
+   opts:["Exactly same for both","Will be different","Will be more for A than for B","Will be more for B than for A"],
+   ans:[1,2], multi:true},
+  {week:9, q:"What will be the approximate efficiency of an OTEC plant if the surface temperature is at 373 K and colder water temperature is 298 K?",
+   opts:["20 %","30 %","40 %","Process is not possible"],
+   ans:[0], multi:false},
+  {week:9, q:"The general concept of 'A journey to the centre of the earth' is possible. This statement is.",
+   opts:["True, because it is possible today.","False, because pressure and temperature both increase significantly as we move from the surface towards the core of earth","True if the starting point is over water","True if the starting point is over land"],
+   ans:[1], multi:false},
+  {week:9, q:"Geothermal energy is tapped near the faults because there _____ is easily accessible.",
+   opts:["High temperature","High pressure","Low temperature","Low pressure"],
+   ans:[0], multi:false},
+  {week:9, q:"Match the following:<br><table><tr><th>Water source</th><th>Additional attachment/modification to the plant</th></tr><tr><td>A. Hot water</td><td>(i) Flash tank</td></tr><tr><td>B. Super-heated steam</td><td>(ii) Directly run turbine</td></tr><tr><td>C. Saturated Steam</td><td>(iii) Binary fluid cycle</td></tr></table>",
+   opts:["A(i), B(ii), C(iii)","A(iii), B(ii), C(i)","A(ii), B(i), C(iii)","A(iii), B(i), C(ii)"],
+   ans:[1], multi:false},
+  {week:9, q:"The use of biomass as fuel impacts food production.",
+   opts:["True since agricultural land is limited","False since the crops used are not necessarily the same","False since the crops used are the same","False since the energy produced can produce even more food"],
+   ans:[0], multi:false},
+  {week:9, q:"A banyan tree's life time is ~ 300 years. If a fully grown banyan tree is burnt in a thermal plant to generate energy and a new tree is planted at the same time.",
+   opts:["The process is carbon neutral in the immediate time frame","The process will become carbon neutral only after many years","There is no carbon involved in this process","There is no oxygen involved in this process"],
+   ans:[1], multi:false},
+  {week:9, q:"Turbine blades are coated with _______to increase _____ and to reduce the_____ of blades.",
+   opts:["Metal, life time, abrasion","Ceramic, life time, corrosion","Metal, efficiency, corrosion","Ceramic, life time, abrasion"],
+   ans:[1,3], multi:true},
+  {week:9, q:"If the water boils at 100°C and 1 atmospheric pressure then at 2 atmospheric pressure, its boiling point will",
+   opts:["Remain unchanged.","Increase","Decrease","It will be constant on earth"],
+   ans:[1], multi:false},
+
+  // WEEK 10
+  {week:10, q:"A battery is an __________.",
+   opts:["Electrochemical device","Energy storage device","Energy conversion device","Internal combustion device"],
+   ans:[0,1], multi:true},
+  {week:10, q:"Most metals can undergo oxidation.",
+   opts:["True","False"], ans:[0], multi:false},
+  {week:10, q:"When electrons in a battery move through the internal circuit in an unhindered manner then the ______",
+   opts:["Open circuit voltage is increased","External short circuit is observed","Internal short circuit is observed","Zero voltage in the battery is observed"],
+   ans:[2,3], multi:true},
+  {week:10, q:"What happens when electrons in a battery move through the external circuit that has a finite resistance?",
+   opts:["Battery voltage decreases","External short circuit occurs","Internal short circuit occurs","Battery voltage increases"],
+   ans:[0], multi:false},
+  {week:10, q:"Match the following:<br><table><tr><th>Column 1</th><th>Column 2</th></tr><tr><td>(A) Thermodynamics</td><td>(i) Good ionic conductivity</td></tr><tr><td>(B) Kinetics</td><td>(ii) How fast the reaction occur</td></tr><tr><td>(C) Electrode</td><td>(iii) Poor ionic conductivity</td></tr><tr><td>(D) Electrolyte</td><td>(iv) Good electronic conductivity</td></tr><tr><td></td><td>(v) Ability of the reaction to happen</td></tr></table>",
+   opts:["A(ii), B(iii), C(i), D(vi)","A(v), B(ii), C(iv), D(i)","A(v), B(ii), C(iii), D(iv)","A(iii), B(i), C(ii), D(v)"],
+   ans:[1], multi:false},
+  {week:10, q:"Corrosion reaction and battery reaction are different from each because activation barrier needs to be ______.",
+   opts:["Increased in corrosion reaction","Decreased in corrosion reaction","Decreased in battery reaction","Increased in battery reaction"],
+   ans:[0,2], multi:true},
+  {week:10, q:"Prismatic cells are better than other types of cells because ______ .",
+   opts:["When arranged in parallel or series, significant extra gap remains between the cells to accommodate swelling","They can be arranged in parallel or series without gaps","These are better suited for use in mobile applications due to space constraints","These cells are softer in comparison to all other cells."],
+   ans:[1,2], multi:true},
+  {week:10, q:"Statement: Plating-striping mechanism is observed in lithium metal based batteries.<br>Assertions:<br>(i) It can lead to the battery explosion due to short circuit.<br>(ii) This mechanism leads to dendrite formation in battery.",
+   opts:["Assertion (i) is right.","Assertion (ii) is right and complements the assertion (i).","Only assertion (ii) is right.","Both assertions are wrong."],
+   ans:[0,1], multi:true},
+  {week:10, q:"At higher C-rate, _____ capacity and at lower C-rate, ______ capacity of the battery can be extracted.",
+   opts:["Higher, lower","Lower, higher","Theoretical, practical","Anode, Cathode"],
+   ans:[1], multi:false},
+  {week:10, q:"As the current drawn from a cell is steadily increased, the voltage ______.",
+   opts:["First increases and then decreases","First decreases and then increases","Keeps decreasing","Keeps increasing"],
+   ans:[2], multi:false},
+
+  // WEEK 11
+  {week:11, q:"Most batteries and fuel cells use _____ and _____ reactants respectively.",
+   opts:["Liquid, Solid","Gas, Solid","Solid, Gas","Gas, Liquid"],
+   ans:[2], multi:false},
+  {week:11, q:"Ionic conductivity of most of the electrolyte ______ on increasing the temperature.",
+   opts:["Decreases","Increases","Remains constant","Varies randomly"],
+   ans:[1], multi:false},
+  {week:11, q:"Among the all the fuel cells, _______ generates water at the_____.",
+   opts:["SOFC, Cathode","PEMFC, Cathode","PAFC, Cathode","PEMFC, Anode"],
+   ans:[1,2], multi:true},
+  {week:11, q:"PEMC and SOFC differ significantly on issues such as _____.",
+   opts:["Presence of electrolyte","Operation temperature","Applications","Location of water generation"],
+   ans:[1,2,3], multi:true},
+  {week:11, q:"Fuel cell processing involves two processes, reforming and cleaning. The following is true regarding these steps",
+   opts:["Reforming is extracting H₂ gas from the fuel.","Cleaning is done to further increase the H₂ gas purity.","Cleaning process converts CO into CO₂.","During reforming process the primary product is H₂O."],
+   ans:[0,1,2], multi:true},
+  {week:11, q:"IC engine and fuel cell operation are based on ___ and ____reactions respectively.",
+   opts:["Electrochemical, Chemical","Chemical, Electrochemical","Electrochemical, Mechanical","Mechanical, electrochemical"],
+   ans:[1], multi:false},
+  {week:11, q:"PEMC can produce more current when the___ is increased.",
+   opts:["Three-phase interface region","Electrode-electrolyte-gas region","Electrode -gas region alone","Electrode-electrolyte region alone"],
+   ans:[0,1], multi:true},
+  {week:11, q:"The voltage of a battery depends on _____ of the reaction while current from the battery depends on _____of the reaction.",
+   opts:["Chemistry, Rate","Kinetics, Thermodynamics","Thermodynamics, Kinetics","Rate, Chemistry"],
+   ans:[0,2], multi:true},
+  {week:11, q:"Match the following:<br><table><tr><th>Polarization losses</th><th>Reason</th></tr><tr><td>(A) Activation losses</td><td>(i) Electrolyte/membrane conductivity has decreased</td></tr><tr><td>(B) Ohmic losses</td><td>(ii) Pathway for reactants to reaction sites is blocked</td></tr><tr><td>(C) Mass transport losses</td><td>(iii) Reaction site has become bad</td></tr></table>",
+   opts:["A(ii), B(iii), C(i)","A(i), B(iii), C(ii)","A(ii), B(i), C(iii)","A(iii), B(i), C(ii)"],
+   ans:[3], multi:false},
+  {week:11, q:"If cells with given specification 0.2 A/cm² at 0.5 V are assembled in series. Then how many cells, and of how much area each, will be required to produce 1kW power.",
+   opts:["100 cells with each 100 cm² area","100 cells with each 50 cm² area","200 cells with each 50 cm² area","100 cells with each 50 cm² area"],
+   ans:[0,2], multi:true},
+
+  // WEEK 12
+  {week:12, q:"Batteries and supercapacitor are identical in performance characteristics",
+   opts:["True","False"], ans:[1], multi:false},
+  {week:12, q:"Statement: The use of regenerative braking in electric vehicles is based on",
+   opts:["Brake pads are removed after each day and attached to the battery for electricity generation","Braking action rotates the rotor of a generator in the car","Brakes generating heat during operation, this heat is converted to electricity","Rechargeable batteries in the car are able to accept electricity generated in the car"],
+   ans:[1,3], multi:true},
+  {week:12, q:"A person is going from Chennai to Pondicherry in car of 2000 kg which is moving with an average speed of 60 km/h. What will be the approximate amount of energy recovered due to regenerative braking, if it comes to a full halt and 50% of the energy is recovered during the braking process?",
+   opts:["27.5 kJ","275 kJ","2750 kJ","10 Wh"],
+   ans:[0], multi:false},
+  {week:12, q:"What are the major replacements done in a conventional capacitor to convert into a supercapacitor?",
+   opts:["Electrons by ions","Dielectric block by electrolyte","Static charge induction by the dynamic motion of charge carriers","Flat contact surfaces by non-flat contact surface"],
+   ans:[1,3], multi:true},
+  {week:12, q:"If two energy storage devices have distinctly different specific energies, then",
+   opts:["The device with higher specific energy has the higher specific power","The device with higher specific energy has the lower specific power","Specific energy and specific power don't necessarily have the same trend across devices","The device with higher specific energy will store more energy for the same weight"],
+   ans:[2,3], multi:true},
+  {week:12, q:"In general, there are 4 gears (G) are present in a simplest flywheel set-up. If the size of first gear (G1) is smaller than gear two (G2), what will happen?",
+   opts:["G2 will move at same rpm as G1.","G2 will move at lower rpm than G1.","G2 will move at higher rpm than G1.","G2 will move at lower rpm than G4."],
+   ans:[1], multi:false},
+  {week:12, q:"Energy stored in a flywheel of radius 'r' rotating with velocity 'v' is proportional to the _____.",
+   opts:["Square of the angular velocity","Cube of the angular velocity","Square root of the angular velocity","Velocity raised to the power zero"],
+   ans:[0], multi:false},
+  {week:12, q:"In a combined cycle using MHD, typically",
+   opts:["MHD is used as a topping cycle","MHD is used as a bottoming cycle","Ionizing additives are added","Ionizing components are actively scrubbed from the flow before it enters the MHD region"],
+   ans:[0,2], multi:true},
+  {week:12, q:"MHD based generation is typically used in association with",
+   opts:["A thermal power plant","A wind based power plant","An OTEC power plant","A flywheel based regenerative breaking system"],
+   ans:[0], multi:false},
+  {week:12, q:"Match the following:<br><table><tr><th>List I</th><th>List II</th></tr><tr><td>(A) 1.23 V</td><td>(i) CFRP flywheel</td></tr><tr><td>(B) Atomic number 19</td><td>(ii) Water</td></tr><tr><td>(C) 60,000 rpm</td><td>(iii) Seeding material</td></tr></table>",
+   opts:["A(iii), B(ii), C(i)","A(ii), B(i), C(iii)","A(i), B(iii), C(ii)","A(ii), B(iii), C(i)"],
+   ans:[3], multi:false},
+];
+
+// =============================
+// STATE
+// =============================
+let quizQuestions = [];
+let currentIdx = 0;
+let userAnswers = []; // array of arrays
+let mode = 'all';
+let selectedWeeks = new Set([1,2,3,4,5,6,7,8,9,10,11,12]);
+let shuffleOn = false;
+let feedbackOn = true;
+let answered = []; // bool per q
+
+// Build week grid
+function buildWeekGrid() {
+  const grid = document.getElementById('week-grid');
+  grid.innerHTML = '';
+  for (let w = 1; w <= 12; w++) {
+    const cnt = allQuestions.filter(q => q.week === w).length;
+    const div = document.createElement('div');
+    div.className = 'week-card selected';
+    div.dataset.week = w;
+    div.onclick = () => toggleWeek(w, div);
+    div.innerHTML = `<div class="wnum">${w}</div><div class="wlabel">Week ${w}</div><div class="wqs">${cnt} Qs</div>`;
+    grid.appendChild(div);
+  }
+  updateSelectedInfo();
+}
+
+function toggleWeek(w, el) {
+  if (selectedWeeks.has(w)) { selectedWeeks.delete(w); el.classList.remove('selected'); }
+  else { selectedWeeks.add(w); el.classList.add('selected'); }
+  updateSelectedInfo();
+}
+
+function selectAllWeeks() {
+  selectedWeeks = new Set([1,2,3,4,5,6,7,8,9,10,11,12]);
+  document.querySelectorAll('.week-card').forEach(c => c.classList.add('selected'));
+  updateSelectedInfo();
+}
+
+function deselectAllWeeks() {
+  selectedWeeks.clear();
+  document.querySelectorAll('.week-card').forEach(c => c.classList.remove('selected'));
+  updateSelectedInfo();
+}
+
+function updateSelectedInfo() {
+  let count = 0;
+  if (mode === 'all') count = allQuestions.length;
+  else count = allQuestions.filter(q => selectedWeeks.has(q.week)).length;
+  document.getElementById('selected-info').innerHTML = `<strong>${count}</strong> questions selected`;
+  document.getElementById('start-btn').disabled = count === 0;
+}
+
+// Mode tabs
+document.querySelectorAll('.mode-tab').forEach(tab => {
+  tab.onclick = () => {
+    document.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    mode = tab.dataset.mode;
+    const ws = document.getElementById('week-selector');
+    ws.style.display = mode === 'select' ? 'block' : 'none';
+    updateSelectedInfo();
+  };
+});
+
+buildWeekGrid();
+
+// =============================
+// START QUIZ
+// =============================
+function startQuiz() {
+  shuffleOn = document.getElementById('opt-shuffle').checked;
+  feedbackOn = document.getElementById('opt-show-feedback').checked;
+
+  let pool = mode === 'all' ? [...allQuestions] : allQuestions.filter(q => selectedWeeks.has(q.week));
+  if (shuffleOn) pool = pool.sort(() => Math.random() - 0.5);
+  quizQuestions = pool;
+  currentIdx = 0;
+  userAnswers = quizQuestions.map(() => []);
+  answered = quizQuestions.map(() => false);
+
+  showScreen('quiz-screen');
+  document.getElementById('q-total').textContent = quizQuestions.length;
+  document.getElementById('header-score').style.display = 'block';
+  renderQuestion();
+}
+
+// =============================
+// RENDER QUESTION
+// =============================
+function renderQuestion() {
+  const q = quizQuestions[currentIdx];
+  const total = quizQuestions.length;
+
+  document.getElementById('q-current').textContent = currentIdx + 1;
+  const pct = Math.round((currentIdx / total) * 100);
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = pct + '%';
+  document.getElementById('q-week-badge').textContent = 'Week ' + q.week;
+  document.getElementById('q-number').textContent = `QUESTION ${currentIdx + 1} ${q.multi ? '(Multiple correct)' : ''}`;
+  document.getElementById('q-text').innerHTML = q.q;
+
+  const optList = document.getElementById('options-list');
+  optList.innerHTML = '';
+  const keys = ['A','B','C','D','E','F'];
+
+  q.opts.forEach((opt, i) => {
+    const div = document.createElement('div');
+    div.className = 'option-item';
+    div.dataset.idx = i;
+
+    if (answered[currentIdx]) {
+      div.classList.add('disabled');
+      const isCorrect = q.ans.includes(i);
+      const isSelected = userAnswers[currentIdx].includes(i);
+      if (isSelected && isCorrect) div.classList.add('correct');
+      else if (isSelected && !isCorrect) div.classList.add('wrong');
+      else if (!isSelected && isCorrect) div.classList.add('correct-answer');
+    } else {
+      if (userAnswers[currentIdx].includes(i)) div.classList.add('selected');
+      div.onclick = () => selectOption(i);
+    }
+
+    div.innerHTML = `<span class="option-key">${keys[i]}</span><span>${opt}</span>`;
+    optList.appendChild(div);
+  });
+
+  // Feedback
+  const fb = document.getElementById('feedback-box');
+  fb.className = 'feedback-box';
+  fb.innerHTML = '';
+
+  if (answered[currentIdx] && feedbackOn) {
+    const correct = arraysMatch(userAnswers[currentIdx].sort(), q.ans.slice().sort());
+    if (correct) {
+      fb.classList.add('show', 'correct-fb');
+      fb.innerHTML = '<strong>✓ Correct!</strong>';
+    } else {
+      fb.classList.add('show', 'wrong-fb');
+      const correctLabels = q.ans.map(i => keys[i]).join(', ');
+      fb.innerHTML = `<strong>✗ Incorrect.</strong> Correct answer(s): <strong>${correctLabels}</strong>`;
+    }
+  }
+
+  // Nav buttons
+  document.getElementById('btn-prev').disabled = currentIdx === 0;
+  document.getElementById('btn-next').textContent = currentIdx === total - 1 ? 'Finish' : 'Next →';
+  document.getElementById('btn-skip').style.display = answered[currentIdx] ? 'none' : 'inline-block';
+
+  updateLiveScore();
+}
+
+function selectOption(i) {
+  const q = quizQuestions[currentIdx];
+  if (answered[currentIdx]) return;
+
+  if (q.multi) {
+    const idx = userAnswers[currentIdx].indexOf(i);
+    if (idx >= 0) userAnswers[currentIdx].splice(idx, 1);
+    else userAnswers[currentIdx].push(i);
+    // Update visual
+    document.querySelectorAll('.option-item').forEach((el, j) => {
+      el.classList.toggle('selected', userAnswers[currentIdx].includes(j));
+    });
+    // Auto-submit when right count selected? No — just let them click Next
+  } else {
+    // Single: select and auto-submit
+    userAnswers[currentIdx] = [i];
+    answered[currentIdx] = true;
+    renderQuestion();
+  }
+}
+
+// For multi-select, clicking Next submits
+function navigate(dir) {
+  const q = quizQuestions[currentIdx];
+  if (dir === 1) {
+    // If multi and not yet answered, submit current selection
+    if (q.multi && !answered[currentIdx] && userAnswers[currentIdx].length > 0) {
+      answered[currentIdx] = true;
+      renderQuestion();
+      return;
+    }
+    if (currentIdx === quizQuestions.length - 1) { endQuiz(); return; }
+    currentIdx++;
+  } else {
+    if (currentIdx > 0) currentIdx--;
+  }
+  renderQuestion();
+}
+
+function skipQuestion() {
+  if (!answered[currentIdx]) {
+    answered[currentIdx] = true;
+    userAnswers[currentIdx] = [];
+  }
+  if (currentIdx < quizQuestions.length - 1) currentIdx++;
+  renderQuestion();
+}
+
+function updateLiveScore() {
+  let s = 0;
+  quizQuestions.forEach((q, i) => {
+    if (answered[i] && arraysMatch(userAnswers[i].slice().sort(), q.ans.slice().sort())) s++;
+  });
+  document.getElementById('live-score').textContent = s;
+}
+
+// =============================
+// END QUIZ / SCORE
+// =============================
+function endQuiz() {
+  // Mark remaining as skipped
+  answered.forEach((a, i) => { if (!a) { answered[i] = true; userAnswers[i] = []; } });
+
+  let correct = 0, wrong = 0, skip = 0;
+  quizQuestions.forEach((q, i) => {
+    if (userAnswers[i].length === 0) skip++;
+    else if (arraysMatch(userAnswers[i].slice().sort(), q.ans.slice().sort())) correct++;
+    else wrong++;
+  });
+
+  const total = quizQuestions.length;
+  const pct = Math.round((correct / total) * 100);
+
+  document.getElementById('final-score').textContent = correct;
+  document.getElementById('final-total').textContent = total;
+  document.getElementById('final-pct').textContent = pct + '%';
+  document.getElementById('s-correct').textContent = correct;
+  document.getElementById('s-wrong').textContent = wrong;
+  document.getElementById('s-skip').textContent = skip;
+
+  let grade = '', gradeClass = '';
+  if (pct >= 80) { grade = 'Excellent ★'; gradeClass = 'grade-A'; }
+  else if (pct >= 60) { grade = 'Good ✓'; gradeClass = 'grade-B'; }
+  else if (pct >= 40) { grade = 'Average'; gradeClass = 'grade-C'; }
+  else { grade = 'Needs Work'; gradeClass = 'grade-D'; }
+  const gradeEl = document.getElementById('final-grade');
+  gradeEl.textContent = grade;
+  gradeEl.className = 'score-grade ' + gradeClass;
+
+  buildReview();
+  showScreen('score-screen');
+  document.getElementById('header-score').style.display = 'none';
+}
+
+function buildReview() {
+  const rv = document.getElementById('review-section');
+  rv.innerHTML = '<div class="review-title">Question Review</div>';
+  const keys = ['A','B','C','D','E','F'];
+
+  quizQuestions.forEach((q, i) => {
+    const ua = userAnswers[i];
+    const isSkip = ua.length === 0;
+    const isCorrect = !isSkip && arraysMatch(ua.slice().sort(), q.ans.slice().sort());
+    const cls = isSkip ? 'r-skip' : isCorrect ? 'r-correct' : 'r-wrong';
+
+    const div = document.createElement('div');
+    div.className = `review-item ${cls}`;
+
+    const correctLabels = q.ans.map(j => keys[j]).join(', ');
+    const yourLabels = ua.length > 0 ? ua.map(j => keys[j]).join(', ') : 'Skipped';
+
+    div.innerHTML = `
+      <div class="r-qnum">Q${i+1} · WEEK ${q.week} · ${isSkip ? 'SKIPPED' : isCorrect ? 'CORRECT' : 'WRONG'}</div>
+      <div class="r-qtext">${q.q.replace(/<table[\s\S]*?<\/table>/gi, '[table]')}</div>
+      <div class="r-answers">
+        <span class="${isCorrect ? 'r-correct-ans' : 'r-your'}">Your answer: <b>${yourLabels}</b></span>
+        ${!isCorrect ? ` &nbsp;|&nbsp; <span class="r-correct-ans">Correct: <b>${correctLabels}</b></span>` : ''}
+      </div>`;
+    rv.appendChild(div);
+  });
+}
+
+function restartSame() {
+  startQuiz();
+}
+
+function showSetup() {
+  showScreen('setup-screen');
+  document.getElementById('header-score').style.display = 'none';
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function arraysMatch(a, b) {
+  if (a.length !== b.length) return false;
+  return a.every((v, i) => v === b[i]);
+}
+</script>
+
+</body>
+</html>
